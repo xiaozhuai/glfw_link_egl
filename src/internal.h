@@ -110,6 +110,21 @@ typedef const GLubyte* (APIENTRY * PFNGLGETSTRINGPROC)(GLenum);
 typedef void (APIENTRY * PFNGLGETINTEGERVPROC)(GLenum,GLint*);
 typedef const GLubyte* (APIENTRY * PFNGLGETSTRINGIPROC)(GLenum,GLuint);
 
+#ifdef GLFW_LINK_LIBEGL
+#define EGL_NO_PLATFORM_SPECIFIC_TYPES
+#define EGL_EGLEXT_PROTOTYPES
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#define EGL_PLATFORM_ANGLE_ANGLE 0x3202
+#define EGL_PLATFORM_ANGLE_TYPE_ANGLE 0x3203
+#define EGL_PLATFORM_ANGLE_TYPE_OPENGL_ANGLE 0x320d
+#define EGL_PLATFORM_ANGLE_TYPE_OPENGLES_ANGLE 0x320e
+#define EGL_PLATFORM_ANGLE_TYPE_D3D9_ANGLE 0x3207
+#define EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE 0x3208
+#define EGL_PLATFORM_ANGLE_TYPE_VULKAN_ANGLE 0x3450
+#define EGL_PLATFORM_ANGLE_TYPE_METAL_ANGLE 0x3489
+#define EGL_PLATFORM_ANGLE_NATIVE_PLATFORM_TYPE_ANGLE 0x348f
+#else  // GLFW_LINK_LIBEGL
 #define EGL_SUCCESS 0x3000
 #define EGL_NOT_INITIALIZED 0x3001
 #define EGL_BAD_ACCESS 0x3002
@@ -198,6 +213,7 @@ typedef void* EGLSurface;
 
 typedef void* EGLNativeDisplayType;
 typedef void* EGLNativeWindowType;
+#endif  // GLFW_LINK_LIBEGL
 
 // EGL function pointer typedefs
 typedef EGLBoolean (APIENTRY * PFN_eglGetConfigAttrib)(EGLDisplay,EGLConfig,EGLint,EGLint*);
@@ -217,6 +233,7 @@ typedef EGLBoolean (APIENTRY * PFN_eglSwapBuffers)(EGLDisplay,EGLSurface);
 typedef EGLBoolean (APIENTRY * PFN_eglSwapInterval)(EGLDisplay,EGLint);
 typedef const char* (APIENTRY * PFN_eglQueryString)(EGLDisplay,EGLint);
 typedef GLFWglproc (APIENTRY * PFN_eglGetProcAddress)(const char*);
+#ifndef GLFW_LINK_LIBEGL
 #define eglGetConfigAttrib _glfw.egl.GetConfigAttrib
 #define eglGetConfigs _glfw.egl.GetConfigs
 #define eglGetDisplay _glfw.egl.GetDisplay
@@ -239,6 +256,7 @@ typedef EGLDisplay (APIENTRY * PFNEGLGETPLATFORMDISPLAYEXTPROC)(EGLenum,void*,co
 typedef EGLSurface (APIENTRY * PFNEGLCREATEPLATFORMWINDOWSURFACEEXTPROC)(EGLDisplay,EGLConfig,void*,const EGLint*);
 #define eglGetPlatformDisplayEXT _glfw.egl.GetPlatformDisplayEXT
 #define eglCreatePlatformWindowSurfaceEXT _glfw.egl.CreatePlatformWindowSurfaceEXT
+#endif  // GLFW_LINK_LIBEGL
 
 #define OSMESA_RGBA 0x1908
 #define OSMESA_FORMAT 0x22

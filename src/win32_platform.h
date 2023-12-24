@@ -113,8 +113,53 @@
 #ifndef USER_DEFAULT_SCREEN_DPI
  #define USER_DEFAULT_SCREEN_DPI 96
 #endif
+#ifndef OCR_NORMAL
+ #define OCR_NORMAL 32512
+#endif
+#ifndef OCR_IBEAM
+ #define OCR_IBEAM 32513
+#endif
+#ifndef OCR_WAIT
+ #define OCR_WAIT 32514
+#endif
+#ifndef OCR_CROSS
+ #define OCR_CROSS 32515
+#endif
+#ifndef OCR_UP
+ #define OCR_UP 32516
+#endif
+#ifndef OCR_SIZE
+ #define OCR_SIZE 32640
+#endif
+#ifndef OCR_ICON
+ #define OCR_ICON 32641
+#endif
+#ifndef OCR_SIZENWSE
+ #define OCR_SIZENWSE 32642
+#endif
+#ifndef OCR_SIZENESW
+ #define OCR_SIZENESW 32643
+#endif
+#ifndef OCR_SIZEWE
+ #define OCR_SIZEWE 32644
+#endif
+#ifndef OCR_SIZENS
+ #define OCR_SIZENS 32645
+#endif
+#ifndef OCR_SIZEALL
+ #define OCR_SIZEALL 32646
+#endif
+#ifndef OCR_ICOCUR
+ #define OCR_ICOCUR 32647
+#endif
+#ifndef OCR_NO
+ #define OCR_NO 32648
+#endif
 #ifndef OCR_HAND
  #define OCR_HAND 32649
+#endif
+#ifndef OCR_APPSTARTING
+ #define OCR_APPSTARTING 32650
 #endif
 
 #if WINVER < 0x0601
@@ -355,8 +400,10 @@ typedef struct VkWin32SurfaceCreateInfoKHR
     HWND                            hwnd;
 } VkWin32SurfaceCreateInfoKHR;
 
+#ifndef GLFW_LINK_LIBEGL
 typedef VkResult (APIENTRY *PFN_vkCreateWin32SurfaceKHR)(VkInstance,const VkWin32SurfaceCreateInfoKHR*,const VkAllocationCallbacks*,VkSurfaceKHR*);
 typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR)(VkPhysicalDevice,uint32_t);
+#endif  // GLFW_LINK_LIBEGL
 
 #define GLFW_WIN32_WINDOW_STATE         _GLFWwindowWin32  win32;
 #define GLFW_WIN32_LIBRARY_WINDOW_STATE _GLFWlibraryWin32 win32;
@@ -601,8 +648,10 @@ EGLNativeDisplayType _glfwGetEGLNativeDisplayWin32(void);
 EGLNativeWindowType _glfwGetEGLNativeWindowWin32(_GLFWwindow* window);
 
 void _glfwGetRequiredInstanceExtensionsWin32(char** extensions);
+#ifndef GLFW_LINK_LIBEGL
 GLFWbool _glfwGetPhysicalDevicePresentationSupportWin32(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);
 VkResult _glfwCreateWindowSurfaceWin32(VkInstance instance, _GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
+#endif  // GLFW_LINK_LIBEGL
 
 void _glfwFreeMonitorWin32(_GLFWmonitor* monitor);
 void _glfwGetMonitorPosWin32(_GLFWmonitor* monitor, int* xpos, int* ypos);

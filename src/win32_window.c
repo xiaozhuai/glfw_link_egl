@@ -2523,6 +2523,7 @@ void _glfwGetRequiredInstanceExtensionsWin32(char** extensions)
     extensions[1] = "VK_KHR_win32_surface";
 }
 
+#ifndef GLFW_LINK_LIBEGL
 GLFWbool _glfwGetPhysicalDevicePresentationSupportWin32(VkInstance instance,
                                                         VkPhysicalDevice device,
                                                         uint32_t queuefamily)
@@ -2574,6 +2575,7 @@ VkResult _glfwCreateWindowSurfaceWin32(VkInstance instance,
 
     return err;
 }
+#endif  // GLFW_LINK_LIBEGL
 
 GLFWAPI HWND glfwGetWin32Window(GLFWwindow* handle)
 {

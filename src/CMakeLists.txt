@@ -345,6 +345,10 @@ if (GLFW_BUILD_SHARED_LIBRARY)
     endif()
 endif()
 
+if(GLFW_LINK_LIBEGL)
+    target_compile_definitions(glfw PRIVATE GLFW_LINK_LIBEGL)
+endif()
+
 foreach(arg ${glfw_PKG_DEPS})
     string(APPEND deps " ${arg}")
 endforeach()

@@ -362,9 +362,10 @@ static void destroyContextEGL(_GLFWwindow* window)
 //
 GLFWbool _glfwInitEGL(void)
 {
-    int i;
     EGLint* attribs = NULL;
     const char* extensions;
+#ifndef GLFW_LINK_LIBEGL
+    int i;
     const char* sonames[] =
     {
 #if defined(_GLFW_EGL_LIBRARY)
@@ -383,10 +384,12 @@ GLFWbool _glfwInitEGL(void)
 #endif
         NULL
     };
+#endif  // GLFW_LINK_LIBEGL
 
     if (_glfw.egl.handle)
         return GLFW_TRUE;
 
+#ifndef GLFW_LINK_LIBEGL
     for (i = 0;  sonames[i];  i++)
     {
         _glfw.egl.handle = _glfwPlatformLoadModule(sonames[i]);
@@ -401,7 +404,12 @@ GLFWbool _glfwInitEGL(void)
     }
 
     _glfw.egl.prefix = (strncmp(sonames[i], "lib", 3) == 0);
+#else  // GLFW_LINK_LIBEGL
+    _glfw.egl.handle = NULL;
+    _glfw.egl.prefix = 0;
+#endif  // GLFW_LINK_LIBEGL
 
+#ifndef GLFW_LINK_LIBEGL
     _glfw.egl.GetConfigAttrib = (PFN_eglGetConfigAttrib)
         _glfwPlatformGetModuleSymbol(_glfw.egl.handle, "eglGetConfigAttrib");
     _glfw.egl.GetConfigs = (PFN_eglGetConfigs)
@@ -436,6 +444,25 @@ GLFWbool _glfwInitEGL(void)
         _glfwPlatformGetModuleSymbol(_glfw.egl.handle, "eglQueryString");
     _glfw.egl.GetProcAddress = (PFN_eglGetProcAddress)
         _glfwPlatformGetModuleSymbol(_glfw.egl.handle, "eglGetProcAddress");
+#else  // GLFW_LINK_LIBEGL
+    _glfw.egl.GetConfigAttrib = eglGetConfigAttrib;
+    _glfw.egl.GetConfigs = eglGetConfigs;
+    _glfw.egl.GetDisplay = eglGetDisplay;
+    _glfw.egl.GetError = eglGetError;
+    _glfw.egl.Initialize = eglInitialize;
+    _glfw.egl.Terminate = eglTerminate;
+    _glfw.egl.BindAPI = eglBindAPI;
+    _glfw.egl.CreateContext = eglCreateContext;
+    _glfw.egl.DestroySurface = eglDestroySurface;
+    _glfw.egl.DestroyContext = eglDestroyContext;
+    _glfw.egl.CreateWindowSurface = eglCreateWindowSurface;
+    _glfw.egl.CreatePbufferSurface = eglCreatePbufferSurface;
+    _glfw.egl.MakeCurrent = eglMakeCurrent;
+    _glfw.egl.SwapBuffers = eglSwapBuffers;
+    _glfw.egl.SwapInterval = eglSwapInterval;
+    _glfw.egl.QueryString = eglQueryString;
+    _glfw.egl.GetProcAddress = eglGetProcAddress;
+#endif  // GLFW_LINK_LIBEGL
 
     if (!_glfw.egl.GetConfigAttrib ||
         !_glfw.egl.GetConfigs ||
@@ -490,10 +517,15 @@ GLFWbool _glfwInitEGL(void)
 
     if (_glfw.egl.EXT_platform_base)
     {
+#ifndef GLFW_LINK_LIBEGL
         _glfw.egl.GetPlatformDisplayEXT = (PFNEGLGETPLATFORMDISPLAYEXTPROC)
             eglGetProcAddress("eglGetPlatformDisplayEXT");
         _glfw.egl.CreatePlatformWindowSurfaceEXT = (PFNEGLCREATEPLATFORMWINDOWSURFACEEXTPROC)
             eglGetProcAddress("eglCreatePlatformWindowSurfaceEXT");
+#else  // GLFW_LINK_LIBEGL
+        _glfw.egl.GetPlatformDisplayEXT = (PFNEGLGETPLATFORMDISPLAYEXTPROC) eglGetPlatformDisplayEXT;
+        _glfw.egl.CreatePlatformWindowSurfaceEXT = (PFNEGLCREATEPLATFORMWINDOWSURFACEEXTPROC) eglCreatePlatformWindowSurfaceEXT;
+#endif  // GLFW_LINK_LIBEGL
     }
 
     _glfw.egl.platform = _glfw.platform.getEGLPlatform(&attribs);
