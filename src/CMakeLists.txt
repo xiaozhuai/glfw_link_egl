@@ -347,6 +347,10 @@ endif()
 
 if(GLFW_LINK_LIBEGL)
     target_compile_definitions(glfw PRIVATE GLFW_LINK_LIBEGL)
+    if(GLFW_USE_GLESX)
+        find_package(glesx CONFIG REQUIRED)
+        target_link_libraries(glfw PRIVATE glesx::EGL)
+    endif()
 endif()
 
 foreach(arg ${glfw_PKG_DEPS})

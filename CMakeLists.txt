@@ -20,6 +20,7 @@ option(GLFW_BUILD_TESTS "Build the GLFW test programs" ${GLFW_STANDALONE})
 option(GLFW_BUILD_DOCS "Build the GLFW documentation" ON)
 option(GLFW_INSTALL "Generate installation target" ON)
 option(GLFW_LINK_LIBEGL "Linking libEGL" OFF)
+option(GLFW_USE_GLESX "Use glesx" OFF)
 
 include(GNUInstallDirs)
 include(CMakeDependentOption)
